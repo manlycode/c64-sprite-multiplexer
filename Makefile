@@ -1,4 +1,10 @@
 TESTS := $(shell find tests/test-cases -type f -print)
+SOURCES := $(shell find src -type f -print)
+
+
+.PHONY: test
+test: tests/build/test-suite.prg
+		open $<
 
 tests/build/test-suite.prg: $(TESTS)
 		cl65 -Oir \
