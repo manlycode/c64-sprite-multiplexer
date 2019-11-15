@@ -15,3 +15,19 @@ tests/build/test-suite.prg: $(TESTS)
 .PHONY : clean
 clean :
 		-rm tests/build/test-suite.prg
+
+
+.PHONY: deps
+deps: vendor/c64unit vendor/cc65/lib
+
+# dependencies
+vendor/c64unit:
+		git clone --origin c64unit http://Commocore@bitbucket.org/Commocore/c64unit.git vendor/c64unit
+	
+
+vendor/cc65:
+		git clone https://github.com/cc65/cc65.git vendor/cc65
+
+
+vendor/cc65/lib: vendor/cc65
+		make -C $<
