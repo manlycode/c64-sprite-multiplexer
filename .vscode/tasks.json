@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "caa65: Compile and link Current File",
+      "type": "shell",
+      "command": "./vendor/cc65/bin/cl65 -Oir -C tests/c64unit.cfg --asm-include-dir ./tests --asm-include-dir ./vendor/c64unit/src/includes --asm-include-dir ./vendor/c64unit/cross-assemblers/ca65 --asm-include-dir ./vendor/cc65/asminc --lib-path vendor/cc65/lib ./tests/test-suite.asm",
+      "problemMatcher": [
+        "$ca65",
+        "$ld65",
+        "$ld65-config",
+        "$ld65-unresolved"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

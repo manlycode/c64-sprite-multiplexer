@@ -9,5 +9,5 @@ testSumToAccumulatorWithCustomMessage:
 	
 	; Assertion
 	; assertEqualToA #11, "sum test to accumulator failed."
-  assertEqualToA #12, "sum test to accumulator failed"
+  assertEqualToA #11, "sum test to accumulator failed"
 rts

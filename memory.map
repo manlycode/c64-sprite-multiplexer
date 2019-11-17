@@ -1,0 +1,32 @@
+Modules list:
+-------------
+test-suite.o:
+    CODE              Offs=000000  Size=000290  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000008  Align=00001  Fill=0000
+    C64UNIT           Offs=000000  Size=000ACF  Align=00001  Fill=0000
+    LOADADDR          Offs=000000  Size=000002  Align=00001  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+ZEROPAGE              000002  000009  000008  00001
+LOADADDR              000188  000189  000002  00001
+CODE                  000801  000A90  000290  00001
+C64UNIT               002000  002ACE  000ACF  00001
+
+
+Exports list by name:
+---------------------
+
+
+
+Exports list by value:
+----------------------
+
+
+
+Imports list:
+-------------
+

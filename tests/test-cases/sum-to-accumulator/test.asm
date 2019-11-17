@@ -9,7 +9,7 @@ testSumToAccumulator:
 	
 	; Assertion
 	pha
-	assertEqualToA #12
+	assertEqualToA #11
 	pla
 	assertNotEqualToA #0
 rts

@@ -1,5 +1,5 @@
 ## Setup
-
+Install https://github.com/sunsided/c64-debugger.
 ```
 make deps
 ```

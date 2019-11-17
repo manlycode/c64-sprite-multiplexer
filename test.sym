@@ -1,0 +1,10 @@
+al 000000 .__ZP_FILEOFFS__
+al 00000A .__ZP_LAST__
+al 0000FE .__ZP_SIZE__
+al 000002 .__ZP_START__
+al 000A08 .sprite1
+al 000A10 .spriteList
+al 000002 .tempPtr1
+al 000004 .tempPtr2
+al 000006 .tempPtr3
+al 000008 .tempPtr4
