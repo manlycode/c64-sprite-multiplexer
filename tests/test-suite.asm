@@ -8,7 +8,8 @@
 	; Examine test cases
 	examineTest testSumToAccumulator
         examineTest testSumToAccumulatorWithCustomMessage
-        examineTest testSpreiteListFirstEmpty
+        examineTest testSpriteListFirstEmpty
+        examineTest testSpriteListRemove
 	
 	; If this point is reached, there were no assertion fails
 	c64unitExit

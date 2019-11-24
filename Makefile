@@ -1,14 +1,30 @@
 TESTS := $(shell find tests/test-cases -type f -print)
 SOURCES := $(shell find src -type f -print)
-C64DEBUGGER := /Applications/C64Debugger.app/Contents/MacOS/C64Debugger
+C64DEBUGGER := /Applications/C64\ Debugger.app/Contents/MacOS/C64Debugger
 
 .PHONY: test
 test: tests/build/test-suite.prg
-		# $(C64DEBUGGER) $< 
+		# $(C64DEBUGGER) -clearsettings -breakpoints breakpoints.txt -symbols test.sym -watch watch.txt -alwaysjmp -pass -prg $< 
 		open $<
+
+.PHONY: clear-settings
+clear-settings:
+		$(C64DEBUGGER) -pass -clearsettings
+.PHONY: load-breakpoints
+load-breakpoints:
+		$(C64DEBUGGER) -pass -breakpoints breakpoints.txt
+
+.PHONY: load-symbols
+load-symbols:
+		$(C64DEBUGGER) -pass -symbols test.sym
+
+.PHONY: load-watches
+load-watches:
+		$(C64DEBUGGER) -pass -watch watch.txt
 
 tests/build/test-suite.prg: $(TESTS) $(SOURCES)
 		./vendor/cc65/bin/cl65 -Oir \
+			-g \
 			-t c64 \
 			-C tests/c64unit.cfg \
 			--asm-include-dir ./vendor/c64unit/src/includes \
@@ -19,8 +35,6 @@ tests/build/test-suite.prg: $(TESTS) $(SOURCES)
 			-Ln test.sym \
 			tests/test-suite.asm \
 			-o tests/build/test-suite.prg
-
-
 
 .PHONY : clean
 clean :

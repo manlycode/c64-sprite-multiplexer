@@ -1,0 +1,6 @@
+temp1
+tempPtr1 2
+tempPtr2 2
+tempPtr3 2
+tempPtr4 2
+spriteList 64

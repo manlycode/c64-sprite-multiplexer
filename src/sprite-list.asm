@@ -1,16 +1,16 @@
 ; @access public
 ; @returnVoid
+.export addSprite
+.export removeSprite
+
 .ZEROPAGE
 tempPtr1: .word 0
 tempPtr2: .word 0
 tempPtr3: .word 0
 tempPtr4: .word 0
+temp1: .byte 0
 
 .CODE
-.export tempPtr1
-.export tempPtr2
-.export tempPtr3
-.export tempPtr4
 
 .macro pushPointer addr
         lda #>addr
@@ -49,33 +49,85 @@ tempPtr4: .word 0
 ;  - tablePtr
 ;  - returnPtr (from jsr)
 addSprite: .scope
+        returnPtr = tempPtr1
+        tablePtr = tempPtr2
+        spritePtr = tempPtr3
+
         ; Save return address
-        pullAndSavePointer tempPtr1     ; returnPtr
-        pullAndSavePointer tempPtr2     ; tablePtr
-        pullAndSavePointer tempPtr3     ; spritePtr
+        pullAndSavePointer returnPtr    ; returnPtr
+        pullAndSavePointer tablePtr     ; tablePtr
+        pullAndSavePointer spritePtr    ; spritePtr
 
         ldy #PointerTable::nextEmptyIdx
-        lda (tempPtr2), y
+        lda (tablePtr), y
         tay
 
-        lda tempPtr3
-        sta (tempPtr2), y
+        lda spritePtr
+        sta (tablePtr), y
         iny
-        lda tempPtr3+1
-        sta (tempPtr2), y
+        lda spritePtr+1
+        sta (tablePtr), y
         iny
         tya
         ldy #PointerTable::nextEmptyIdx
-        sta (tempPtr2), y
+        sta (tablePtr), y
 
         ; Reload return address
         pushPointerFrom tempPtr1
         rts
-        
-returnPtr:
-        .word 0
-tablePtr:
-        .word 0
 .endscope
-tempPtr:
-        .word 0
+
+removeSprite: .scope
+        returnPtr = tempPtr1
+        tablePtr = tempPtr2
+        spritePtr = tempPtr3
+        currentIdx = temp1
+
+        ; Save return address
+        pullAndSavePointer returnPtr    
+        pullAndSavePointer tablePtr     
+        pullAndSavePointer spritePtr    
+        
+        pushPointerFrom returnPtr
+
+        ; scan the table find a match, zero it out 
+        ldy #PointerTable::nextEmptyIdx
+        lda (tablePtr), y
+        sta currentIdx
+
+        ldy #PointerTable::data
+        lda (tablePtr), y
+@loop:
+        cpy #64
+        bpl @end
+        lda (tablePtr), y
+        cmp spritePtr
+        bne :+
+        iny
+        lda (tablePtr), y
+        cmp spritePtr+1
+        beq @clear
+:       iny     
+        iny
+        jmp @loop
+
+@clear:
+        dey
+        tya
+        cmp currentIdx
+        bpl :+
+        ldy #PointerTable::nextEmptyIdx
+        sta (tablePtr), y
+
+:       tay
+        lda #0
+        sta (tablePtr), y
+        iny
+        sta (tablePtr), y
+        jmp @end
+
+        ; didn't match
+@end:
+        pushPointerFrom returnPtr
+        rts
+.endscope
