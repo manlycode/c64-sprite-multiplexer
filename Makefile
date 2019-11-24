@@ -10,12 +10,13 @@ test: tests/build/test-suite.prg
 .PHONY: clear-settings
 clear-settings:
 		$(C64DEBUGGER) -pass -clearsettings
-.PHONY: load-breakpoints
-load-breakpoints:
+
+.PHONY: breakpoints
+breakpoints: breakpoints.txt
 		$(C64DEBUGGER) -pass -breakpoints breakpoints.txt
 
-.PHONY: load-symbols
-load-symbols:
+.PHONY: symbols
+symbols: test.sym
 		$(C64DEBUGGER) -pass -symbols test.sym
 
 .PHONY: watches
@@ -23,6 +24,9 @@ watches: watches.txt
 		$(C64DEBUGGER) -pass -watch watches.txt
 
 watches.txt: test.sym watchdef.txt
+	ruby ./scripts/sym_to_watches.rb
+
+breakpoints.txt: test.sym breakpointdef.txt
 	ruby ./scripts/sym_to_watches.rb
 
 tests/build/test-suite.prg: $(TESTS) $(SOURCES)
@@ -43,6 +47,9 @@ tests/build/test-suite.prg: $(TESTS) $(SOURCES)
 clean :
 		-rm tests/build/test-suite.prg
 		-rm tests/test-suite.o
+		-rm test.sym
+		-rm watch.txt
+		-rm breakpoints.txt
 
 
 .PHONY: deps
