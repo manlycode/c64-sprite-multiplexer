@@ -18,9 +18,12 @@ load-breakpoints:
 load-symbols:
 		$(C64DEBUGGER) -pass -symbols test.sym
 
-.PHONY: load-watches
-load-watches:
-		$(C64DEBUGGER) -pass -watch watch.txt
+.PHONY: watches
+watches: watches.txt
+		$(C64DEBUGGER) -pass -watch watches.txt
+
+watches.txt: test.sym watchdef.txt
+	ruby ./scripts/sym_to_watches.rb
 
 tests/build/test-suite.prg: $(TESTS) $(SOURCES)
 		./vendor/cc65/bin/cl65 -Oir \
