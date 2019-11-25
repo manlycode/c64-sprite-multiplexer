@@ -2,3 +2,6 @@
 vendor/*
 *.o
 tests/build/*
+
+test.sym
+
