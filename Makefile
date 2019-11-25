@@ -3,17 +3,13 @@ SOURCES := $(shell find src -type f -print)
 C64DEBUGGER := /Applications/C64\ Debugger.app/Contents/MacOS/C64Debugger
 
 .PHONY: test
-test: tests/build/test-suite.prg
+test: tests/build/test-suite.prg symbols breakpoints watches
 		# $(C64DEBUGGER) -clearsettings -breakpoints breakpoints.txt -symbols test.sym -watch watch.txt -alwaysjmp -pass -prg $< 
 		open $<
 
 .PHONY: clear-settings
 clear-settings:
 		$(C64DEBUGGER) -pass -clearsettings
-
-.PHONY: breakpoints
-breakpoints: breakpoints.txt
-		$(C64DEBUGGER) -pass -breakpoints breakpoints.txt
 
 .PHONY: symbols
 symbols: test.sym
@@ -22,6 +18,12 @@ symbols: test.sym
 .PHONY: watches
 watches: watches.txt
 		$(C64DEBUGGER) -pass -watch watches.txt
+
+.PHONY: breakpoints
+breakpoints: breakpoints.txt
+		$(C64DEBUGGER) -pass -breakpoints breakpoints.txt
+
+test.sym: tests/build/test-suite.prg
 
 watches.txt: test.sym watchdef.txt
 	ruby ./scripts/sym_to_watches.rb

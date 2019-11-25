@@ -10,6 +10,7 @@
         examineTest testSumToAccumulatorWithCustomMessage
         examineTest testSpriteListFirstEmpty
         examineTest testSpriteListRemove
+        examineTest testSpriteListRemove2
 	
 	; If this point is reached, there were no assertion fails
 	c64unitExit

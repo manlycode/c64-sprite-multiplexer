@@ -33,15 +33,44 @@ temp1: .byte 0
         pha
 .endmacro
 
+.macro savePointer addr, zpTarget
+        lda #<addr
+        sta zpTarget
+        lda #>addr
+        sta zpTarget+1
+.endmacro
+
+
 .struct PointerTable
         nextEmptyIdx.byte
         data .word 64
 .endstruct
 
 
-.macro initTable label
+.macro initTable addr
+        lda #<addr
+        sta tempPtr1
+        lda #>addr
+        sta tempPtr1+1
+
+        ; Set the nextEmptyIdx
+        ldy #0
         lda #1
-        sta label+PointerTable::nextEmptyIdx
+        sta (tempPtr1), y
+
+        ; Set the rest of the data
+        lda #0
+:       iny
+        cpy .sizeof(PointerTable)
+        bpl :+
+        sta (tempPtr1), y
+
+        jmp :-
+
+
+:       ;end
+
+
 .endmacro
 
 ; Stack Args:
@@ -68,12 +97,23 @@ addSprite: .scope
         lda spritePtr+1
         sta (tablePtr), y
         iny
-        tya
+
+:       lda (tablePtr), y
+        cmp #0
+        beq :+
+        iny
+        iny
+
+        cpy .sizeof(PointerTable)
+        bpl :++
+        jmp :-
+
+:       tya
         ldy #PointerTable::nextEmptyIdx
         sta (tablePtr), y
 
         ; Reload return address
-        pushPointerFrom tempPtr1
+:       pushPointerFrom tempPtr1
         rts
 .endscope
 

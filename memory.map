@@ -1,7 +1,7 @@
 Modules list:
 -------------
 test-suite.o:
-    CODE              Offs=000000  Size=00043B  Align=00001  Fill=0000
+    CODE              Offs=000000  Size=000648  Align=00001  Fill=0000
     ZEROPAGE          Offs=000000  Size=000009  Align=00001  Fill=0000
     C64UNIT           Offs=000000  Size=000ACF  Align=00001  Fill=0000
     LOADADDR          Offs=000000  Size=000002  Align=00001  Fill=0000
@@ -13,7 +13,7 @@ Name                   Start     End    Size  Align
 ----------------------------------------------------
 ZEROPAGE              000002  00000A  000009  00001
 LOADADDR              000188  000189  000002  00001
-CODE                  000801  000C3B  00043B  00001
+CODE                  000801  000E48  000648  00001
 C64UNIT               002000  002ACE  000ACF  00001
 
 
