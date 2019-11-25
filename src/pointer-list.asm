@@ -8,7 +8,15 @@ tempPtr1: .word 0
 tempPtr2: .word 0
 tempPtr3: .word 0
 tempPtr4: .word 0
+
 temp1: .byte 0
+temp2: .byte 0
+temp3: .byte 0
+temp4: .byte 0
+temp5: .byte 0
+temp6: .byte 0
+temp7: .byte 0
+temp8: .byte 0
 
 .CODE
 
