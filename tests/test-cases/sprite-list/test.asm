@@ -2,7 +2,7 @@
 ; @return void
 spriteList: .tag PointerTable
 
-testSpriteListFirstEmpty: .scope
+testSpriteListFirstEmpty:
         initTable spriteList
         assertEqual spriteList, #1
 
@@ -22,12 +22,6 @@ testSpriteListFirstEmpty: .scope
         assertEqual #<sprite2, spriteList+PointerTable::data+2, "wrong le pointer in spriteList::data+2"
         assertEqual #>sprite2, spriteList+PointerTable::data+3, "wrong le pointer in spriteList::data+3"
         rts
-sprite1:
-        .byte 1, 2, 3, 4
-sprite2:
-        .byte 0, 0, 0, 0
-
-.endscope
 
 testSpriteListRemove:
         initTable spriteList
@@ -75,6 +69,10 @@ testSpriteListRemove2:
         
         rts
 
+sprite1:
+        .byte 1, 2, 3, 4
+sprite2:
+        .byte 0, 0, 0, 0
 sprite3:
         .byte 1, 2, 3, 4
 sprite4:
