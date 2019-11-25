@@ -2,7 +2,7 @@
 ; @return void
 spriteList: .tag PointerTable
 
-testSpriteListFirstEmpty:
+testPointerListFirstEmpty:
         initTable spriteList
         assertEqual spriteList, #1
 
@@ -23,7 +23,7 @@ testSpriteListFirstEmpty:
         assertEqual #>sprite2, spriteList+PointerTable::data+3, "wrong le pointer in spriteList::data+3"
         rts
 
-testSpriteListRemove:
+testPointerListRemove:
         initTable spriteList
         assertEqual #1, spriteList, "spriteList::nextIdx 1"
 
@@ -54,7 +54,7 @@ testSpriteListRemove:
         assertEqual #1, spriteList, "remove spriteList::nextIdx 1-2"
         rts
 
-testSpriteListRemove2:
+testPointerListRemove2:
         pushPointer sprite6
         pushPointer spriteList
         jsr addSprite
