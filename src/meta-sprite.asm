@@ -27,6 +27,7 @@ initMetaSprite: .scope
         startY = temp6
         curX = temp7
         curY = temp8
+        ptrIdx = temp9
 
         pullAndSavePointer returnPtr
         pullAndSavePointer msPtr
@@ -53,7 +54,11 @@ initMetaSprite: .scope
         sta startY
         sta curY
 
+        lda #Metasprite::ptrs
+        sta ptrIdx
         ldy #Metasprite::ptrs
+
+@loopCols:
         lda (msPtr), y
         sta curSprDataPtr
         iny 
@@ -61,12 +66,54 @@ initMetaSprite: .scope
         sta curSprDataPtr+1
 
         ldy #0
-        lda startX
+        lda curX
         sta (curSprDataPtr), y
         iny
-        lda startY
+        lda curY
         sta (curSprDataPtr), y
 
+        inc curCol
+        lda curCol
+        cmp cols
+        beq @loopRows
+
+        ; add offset to
+        lda curX
+        adc #C64_SPRITE_WIDTH
+        sta curX
+
+        inc ptrIdx
+        inc ptrIdx
+        ldy ptrIdx
+        jmp @loopCols
+        
+
+@loopRows:
+        lda curY
+        clc
+        adc #C64_SPRITE_HEIGHT
+        sta curY
+
+        lda #0
+        sta curCol
+        lda startX
+        sta curX
+
+        inc curRow
+        lda curRow
+        cmp rows
+        beq @end
+        
+
+        inc ptrIdx
+        inc ptrIdx
+        ldy ptrIdx
+        jmp @loopCols
+
+        ; lda curX
+        ; adc C64_SPRITE_WIDTH
+        ; sta 
+@end:
         pushPointerFrom tempPtr1
 
         rts

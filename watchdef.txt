@@ -8,6 +8,7 @@ temp5 1
 temp6 1
 temp7 1
 temp8 1
+temp9 1
 spriteData1 2
 spriteData2 2
 spriteData3 2

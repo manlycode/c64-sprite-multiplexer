@@ -25,11 +25,11 @@ breakpoints: breakpoints.txt
 
 test.sym: tests/build/test-suite.prg
 
-watches.txt: test.sym watchdef.txt
+watches.txt: watchdef.txt test.sym
 	ruby ./scripts/sym_to_watches.rb
 
-breakpoints.txt: test.sym breakpointdef.txt
-	ruby ./scripts/sym_to_watches.rb
+breakpoints.txt: breakpointdef.txt breakpointdef.txt
+	ruby ./scripts/sym_to_breakpoints.rb
 
 tests/build/test-suite.prg: $(TESTS) $(SOURCES)
 		./vendor/cc65/bin/cl65 -Oir \
