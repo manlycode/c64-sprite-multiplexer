@@ -3,9 +3,10 @@ SOURCES := $(shell find src -type f -print)
 C64DEBUGGER := /Applications/C64\ Debugger.app/Contents/MacOS/C64Debugger
 
 .PHONY: test
-test: tests/build/test-suite.prg symbols breakpoints watches
-		# $(C64DEBUGGER) -clearsettings -breakpoints breakpoints.txt -symbols test.sym -watch watch.txt -alwaysjmp -pass -prg $< 
-		open $<
+# test: tests/build/test-suite.prg symbols breakpoints watches
+test: tests/build/test-suite.prg breakpoints.txt watches.txt
+		# $(C64DEBUGGER) -breakpoints breakpoints.txt -symbols test.sym -watch watches.txt -alwaysjmp -pass -prg $<
+		# open $<
 
 .PHONY: clear-settings
 clear-settings:
@@ -16,11 +17,11 @@ symbols: test.sym
 		$(C64DEBUGGER) -pass -symbols test.sym
 
 .PHONY: watches
-watches: watches.txt
+watches: watches.txt symbols
 		$(C64DEBUGGER) -pass -watch watches.txt
 
 .PHONY: breakpoints
-breakpoints: breakpoints.txt
+breakpoints: breakpoints.txt symbols
 		$(C64DEBUGGER) -pass -breakpoints breakpoints.txt
 
 test.sym: tests/build/test-suite.prg
@@ -50,7 +51,7 @@ clean :
 		-rm tests/build/test-suite.prg
 		-rm tests/test-suite.o
 		-rm test.sym
-		-rm watch.txt
+		-rm watches.txt
 		-rm breakpoints.txt
 
 

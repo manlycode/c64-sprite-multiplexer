@@ -3,28 +3,16 @@
 .export addSprite
 .export removeSprite
 
-.ZEROPAGE
-tempPtr1: .word 0
-tempPtr2: .word 0
-tempPtr3: .word 0
-tempPtr4: .word 0
-
-temp1: .byte 0
-temp2: .byte 0
-temp3: .byte 0
-temp4: .byte 0
-temp5: .byte 0
-temp6: .byte 0
-temp7: .byte 0
-temp8: .byte 0
-temp9: .byte 0
-
 .CODE
-
 .macro pushPointer addr
         lda #>addr
         pha
         lda #<addr
+        pha
+.endmacro
+
+.macro pushVal val 
+        lda val
         pha
 .endmacro
 
@@ -33,6 +21,11 @@ temp9: .byte 0
         sta label; hi byte
         pla
         sta label+1 ; lo byte
+.endmacro
+
+.macro pullAndSaveVal label
+        pla
+        sta label; hi byte
 .endmacro
 
 .macro pushPointerFrom label

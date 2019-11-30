@@ -114,8 +114,22 @@ initMetaSprite: .scope
         ; adc C64_SPRITE_WIDTH
         ; sta 
 @end:
-        pushPointerFrom tempPtr1
+        pushPointerFrom returnPtr
 
         rts
 
+.endscope
+
+
+addToSpriteList: .scope
+        returnPtr       = tempPtr8
+        listPtr         = tempPtr1
+        msPtr           = tempPtr2
+
+        pullAndSavePointer returnPtr
+        pullAndSavePointer listPtr
+        pullAndSavePointer msPtr
+
+        pushPointerFrom returnPtr
+        rts
 .endscope
