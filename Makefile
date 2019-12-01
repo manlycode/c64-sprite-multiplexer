@@ -1,12 +1,28 @@
 TESTS := $(shell find tests/test-cases -type f -print)
 SOURCES := $(shell find src -type f -print)
 C64DEBUGGER := /Applications/C64\ Debugger.app/Contents/MacOS/C64Debugger
+CFG_PATH := ./cfg
+LIB_PATH := $(CC65_DIR)/lib
+INC_PATH := $(CC65_DIR)/asminc
+INC_LIB_PATH := $(CC65_DIR)/libsrc
+ASFLAGS := -g -t c64
+LDFLAGS := -t c64
+LABELS_POSTFIX := labels.txt
+VICETOOLS := $(HOME)/bin/vice/tools
+C1541 := $(VICETOOLS)/c1541
+VICE := $(HOME)/bin/vice/tools/x64
+
+.PHONY: all
+all: test main
 
 .PHONY: test
-# test: tests/build/test-suite.prg symbols breakpoints watches
-test: tests/build/test-suite.prg breakpoints.txt watches.txt
+# test: build/test-suite.prg symbols breakpoints watches
+test: build/test-suite.prg breakpoints.txt watches.txt
 		# $(C64DEBUGGER) -breakpoints breakpoints.txt -symbols test.sym -watch watches.txt -alwaysjmp -pass -prg $<
 		# open $<
+		#
+.PHONY: main
+main: build/main.d64
 
 .PHONY: clear-settings
 clear-settings:
@@ -24,33 +40,56 @@ watches: watches.txt symbols
 breakpoints: breakpoints.txt symbols
 		$(C64DEBUGGER) -pass -breakpoints breakpoints.txt
 
-test.sym: tests/build/test-suite.prg
+test.sym: build/test-suite.prg
 
 watches.txt: watchdef.txt test.sym
 	ruby ./scripts/sym_to_watches.rb
 
-breakpoints.txt: breakpointdef.txt breakpointdef.txt
+breakpoints.txt: breakpointdef.txt
 	ruby ./scripts/sym_to_breakpoints.rb
 
-tests/build/test-suite.prg: $(TESTS) $(SOURCES)
-		./vendor/cc65/bin/cl65 -Oir \
-			-g \
-			-t c64 \
-			-C tests/c64unit.cfg \
-			--asm-include-dir ./vendor/c64unit/src/includes \
-			--asm-include-dir ./vendor/c64unit/cross-assemblers/ca65 \
-			--asm-include-dir ./vendor/cc65/asminc \
-			--lib-path vendor/cc65/lib \
-			-m memory.map \
-			-Ln test.sym \
-			tests/test-suite.asm \
-			-o tests/build/test-suite.prg
+build/test-suite.prg: $(TESTS) $(SOURCES)
+	./vendor/cc65/bin/cl65 -Oir \
+		-g \
+		-t c64 \
+		--cfg-path $(CFG_PATH) \
+		-C c64unit.cfg \
+		--asm-include-dir ./vendor/c64unit/src/includes \
+		--asm-include-dir ./vendor/c64unit/cross-assemblers/ca65 \
+		--asm-include-dir ./vendor/cc65/asminc \
+		--lib-path vendor/cc65/lib \
+		-m memory.map \
+		-Ln test.sym \
+		tests/test-suite.asm \
+		-o build/test-suite.prg
+
+build/main.d64: build/main.prg
+	c1541 \
+    -format main,id d64 $@\
+    -attach $@ \
+    -write build/main.prg main
+
+build/main.prg: $(SOURCES) cfg/c64.cfg
+	./vendor/cc65/bin/cl65 -Oir \
+		-g \
+		-t c64 \
+		--cfg-path $(CFG_PATH) \
+		-C cfg/c64.cfg \
+		--asm-include-dir ./vendor/cc65/asminc \
+		--asm-include-dir ./vendor/cc65/libsrc \
+    --asm-include-dir $(INC_LIB_PATH) \
+		-L $(LIB_PATH) \
+		--lib c64.lib \
+		-m memory.map \
+		-Ln main.sym \
+		-o build/main.prg \
+		src/main.asm
 
 .PHONY : clean
 clean :
-		-rm tests/build/test-suite.prg
-		-rm tests/test-suite.o
-		-rm test.sym
+		-rm build/*.prg
+		-rm **/*.o
+		-rm *..sym
 		-rm watches.txt
 		-rm breakpoints.txt
 

@@ -1,32 +1,31 @@
 Modules list:
 -------------
-test-suite.o:
-    CODE              Offs=000000  Size=000A5B  Align=00001  Fill=0000
-    ZEROPAGE          Offs=000000  Size=000031  Align=00001  Fill=0000
-    C64UNIT           Offs=000000  Size=000ACF  Align=00001  Fill=0000
+/Users/chrisrittersdorf/git/manlycode/c64-sprite-multiplexer/vendor/cc65/lib/c64.lib(loadaddr.o):
     LOADADDR          Offs=000000  Size=000002  Align=00001  Fill=0000
+main.o:
+    CODE              Offs=000000  Size=00003D  Align=00001  Fill=0000
 
 
 Segment list:
 -------------
 Name                   Start     End    Size  Align
 ----------------------------------------------------
-ZEROPAGE              000002  000032  000031  00001
-LOADADDR              000188  000189  000002  00001
-CODE                  000801  00125B  000A5B  00001
-C64UNIT               002000  002ACE  000ACF  00001
+LOADADDR              0007FF  000800  000002  00001
+CODE                  00080D  000849  00003D  00001
 
 
 Exports list by name:
 ---------------------
-
+__LOADADDR__              000001 REA    
 
 
 Exports list by value:
 ----------------------
-
+__LOADADDR__              000001 REA    
 
 
 Imports list:
 -------------
+__LOADADDR__ (loadaddr.o):
+    [linker generated]        cfg/c64.cfg(5)
 
