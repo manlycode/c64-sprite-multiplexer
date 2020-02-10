@@ -1,12 +1,16 @@
 .include "c64.inc"
-.include "cbm.mac"
 .include "c64/clrscr.s"
+.include "temp-vars.asm"
+.include "pointer-list.asm"
+
+.segment "ZEROPAGE"
 
 .org $0801
-
-.code
+.segment "CODE"
         sei
         jsr _clrscr
+        jsr initScreen
+        jsr init_metasprite
         
         ldy #$7f    ; $7f = %01111111
         sty $dc0d   ; Turn off CIAs Timer interrupts
@@ -35,13 +39,24 @@
 irq:
         dec $d019        ; acknowledge IRQ
 
-        lda #3
+        lda #0
         sta VIC_BORDERCOLOR
+        sta VIC_BG_COLOR0
+
 
         jmp $ea81        ; return to kernel interrupt routine
 
+        .include "config_sprites.asm"
+
+
+init_metasprite:
+        
+        rts
 
 .segment "SIDDATA"
 .segment "SPRITEDATA"
+
+sprites:
+        .incbin "../resources/sprites.spr", 3,1024
 .segment "CHARDATA"
 

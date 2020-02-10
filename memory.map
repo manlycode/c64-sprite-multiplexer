@@ -3,15 +3,19 @@ Modules list:
 /Users/chrisrittersdorf/git/manlycode/c64-sprite-multiplexer/vendor/cc65/lib/c64.lib(loadaddr.o):
     LOADADDR          Offs=000000  Size=000002  Align=00001  Fill=0000
 main.o:
-    CODE              Offs=000000  Size=00003D  Align=00001  Fill=0000
+    CODE              Offs=000000  Size=000111  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000033  Align=00001  Fill=0000
+    SPRITEDATA        Offs=000000  Size=000400  Align=00001  Fill=0000
 
 
 Segment list:
 -------------
 Name                   Start     End    Size  Align
 ----------------------------------------------------
+ZEROPAGE              000002  000034  000033  00001
 LOADADDR              0007FF  000800  000002  00001
-CODE                  00080D  000849  00003D  00001
+CODE                  00080D  00091D  000111  00001
+SPRITEDATA            002000  0023FF  000400  00001
 
 
 Exports list by name:
